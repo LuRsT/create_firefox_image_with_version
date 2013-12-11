@@ -1,5 +1,4 @@
-#!/usr/bin/bash
-set -x
+#!/bin/bash
 
 text=$1
 output_image=$2
