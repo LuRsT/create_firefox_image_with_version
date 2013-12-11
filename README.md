@@ -11,7 +11,7 @@ Requires ImageMagick
 
     $ create_firefox_image_with_version "26.0" fx26.png"
 
-Note: Use png as file exception or you will get no transparency goodness.
+Note: Use png as file extension or you will get no transparency goodness.
 
 Output:
 
