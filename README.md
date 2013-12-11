@@ -1,4 +1,4 @@
-create_firefox_image_with_version
+Create Firefox Image With Version
 =================================
 
 Create a firefox image with version number
