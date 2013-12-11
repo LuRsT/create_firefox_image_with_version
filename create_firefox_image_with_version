@@ -1,0 +1,41 @@
+#!/usr/bin/bash
+set -x
+
+text=$1
+output_image=$2
+
+image_container="base.png"
+image_text_box="box.png"
+
+TEMPORARY_TEXT_IMAGE='/tmp/text.png'
+TEMPORARY_BOX_TEXT_IMAGE='/tmp/text2.png'
+
+# Create Text image with label
+convert \
+    -background transparent \
+    -fill white \
+    -pointsize 120 \
+    -font Verdana \
+    label:$text \
+    $TEMPORARY_TEXT_IMAGE
+
+convert $TEMPORARY_TEXT_IMAGE \
+    -fill white \
+    -colorize 0% \
+    miff:- | \
+        composite \
+            -dissolve 100 \
+            -geometry +300+280 \
+            - $image_text_box $TEMPORARY_BOX_TEXT_IMAGE
+
+convert $TEMPORARY_BOX_TEXT_IMAGE \
+    -fill white \
+    -colorize 0% \
+    miff:- | \
+        composite \
+            -dissolve 100 \
+            -gravity southeast \
+            - $image_container $output_image
+
+rm $TEMPORARY_TEXT_IMAGE
+rm $TEMPORARY_BOX_TEXT_IMAGE
