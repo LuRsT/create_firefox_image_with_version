@@ -1,10 +1,14 @@
 Create Firefox Image With Version
 =================================
 
-Create a firefox image with version number
+Create a firefox icon with version number in the icon.
 
-    $ create_firefox_image_with_version "21" output.png
+This was created to be used for generating version-based icons for @omgmog's [Install All Firefoxes](https://github.com/omgmog/install-all-firefox) shell script for OS X.
+
+Requires ImageMagick
+
+    $ create_firefox_image_with_version "26.0" fx26.png"
 
 Output:
     
-![](http://i.imgur.com/VdMnMQM.png)
+![](http://f.cl.ly/items/1q0c210Y0A193U3p2I26/fx26.png)

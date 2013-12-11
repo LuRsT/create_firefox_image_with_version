@@ -1,40 +1,67 @@
 #!/bin/bash
 
-text=$1
-output_image=$2
+in_text=$1
+out_image=$2
+x_offset="275"
+y_offset="285"
+tmp_dir="/tmp/"
+in_icon_base="base.png"
+in_text_container="box.png"
+out_text="${tmp_dir}text.png"
+out_text_shadow="${tmp_dir}shadow.png"
+out_text_container="${tmp_dir}text_box.png"
 
-image_container="base.png"
-image_text_box="box.png"
+# Build the icon in layers
 
-TEMPORARY_TEXT_IMAGE='/tmp/text.png'
-TEMPORARY_BOX_TEXT_IMAGE='/tmp/text2.png'
-
-# Create Text image with label
+# White text
 convert \
     -background transparent \
     -fill white \
     -pointsize 120 \
-    -font Verdana \
-    label:$text \
-    $TEMPORARY_TEXT_IMAGE
+    label:$in_text \
+    $out_text
 
-convert $TEMPORARY_TEXT_IMAGE \
+# Text shadow
+convert \
+    -background transparent \
+    -fill black \
+    -pointsize 120 \
+    label:$in_text \
+    $out_text_shadow
+convert $out_text_shadow \
+    -gaussian-blur 5x5 \
+    $out_text_shadow
+
+convert $out_text \
+    -colorize 0% \
+    miff:- | \
+        composite \
+            -dissolve 100 \
+            - $out_text_shadow \
+    $out_text
+
+# Stick it all together
+convert $out_text \
     -fill white \
     -colorize 0% \
     miff:- | \
         composite \
             -dissolve 100 \
-            -geometry +300+280 \
-            - $image_text_box $TEMPORARY_BOX_TEXT_IMAGE
+            -geometry +$x_offset+$y_offset \
+            - $in_text_container \
+    $out_text_container
 
-convert $TEMPORARY_BOX_TEXT_IMAGE \
+convert $out_text_container \
     -fill white \
     -colorize 0% \
     miff:- | \
         composite \
             -dissolve 100 \
             -gravity southeast \
-            - $image_container $output_image
+            - $in_icon_base \
+    $out_image
 
-rm $TEMPORARY_TEXT_IMAGE
-rm $TEMPORARY_BOX_TEXT_IMAGE
+# Clean up
+rm $out_text
+rm $out_text_shadow
+rm $out_text_container
